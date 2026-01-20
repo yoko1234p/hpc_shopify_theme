@@ -71,34 +71,38 @@
   </header>
 
   <!-- Marquee Banner -->
-  <div class="bg-black text-[#d4af37] border-black py-2 overflow-hidden whitespace-nowrap border-y uppercase font-bold text-xs tracking-[0.4em] transition-colors duration-500 relative w-full">
-    <div class="marquee-track flex">
-      <div class="animate-marquee flex-shrink-0 px-4 font-lhkk">
-        {{ section.settings.marquee_text | default: '快樂印刷公司・Since 1977' }}
-        &nbsp; &nbsp; &nbsp; &nbsp;
-        {{ section.settings.marquee_text | default: '快樂印刷公司・Since 1977' }}
-        &nbsp; &nbsp; &nbsp; &nbsp;
-      </div>
-      <div class="animate-marquee flex-shrink-0 px-4 font-lhkk">
-        {{ section.settings.marquee_text | default: '快樂印刷公司・Since 1977' }}
-        &nbsp; &nbsp; &nbsp; &nbsp;
-        {{ section.settings.marquee_text | default: '快樂印刷公司・Since 1977' }}
-        &nbsp; &nbsp; &nbsp; &nbsp;
-      </div>
+  <div class="marquee-container bg-black text-[#d4af37] border-black py-2 overflow-hidden whitespace-nowrap border-y uppercase font-bold text-xs tracking-[0.4em] transition-colors duration-500 relative w-full">
+    <div class="marquee-track">
+      {%- for i in (1..8) -%}
+        <span class="marquee-item font-lhkk">
+          {{ section.settings.marquee_text | default: '快樂印刷公司・Since 1977' }}
+          &nbsp; &nbsp; ✦ &nbsp; &nbsp;
+        </span>
+      {%- endfor -%}
+      {%- for i in (1..8) -%}
+        <span class="marquee-item font-lhkk">
+          {{ section.settings.marquee_text | default: '快樂印刷公司・Since 1977' }}
+          &nbsp; &nbsp; ✦ &nbsp; &nbsp;
+        </span>
+      {%- endfor -%}
     </div>
   </div>
 </div>
 
 <style>
+  .marquee-container {
+    --marquee-duration: 30s;
+  }
   .marquee-track {
-    width: max-content;
+    display: inline-flex;
+    animation: marquee-scroll var(--marquee-duration) linear infinite;
   }
-  @keyframes marquee {
+  .marquee-item {
+    flex-shrink: 0;
+  }
+  @keyframes marquee-scroll {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
-  }
-  .animate-marquee {
-    animation: marquee 20s linear infinite;
+    100% { transform: translateX(-50%); }
   }
 </style>
 
