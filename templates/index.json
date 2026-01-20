@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "company-hero": {
@@ -11,12 +20,14 @@
         "char_6": "司",
         "address_line1": "大角咀",
         "address_line2": "博文街17號",
-        "english_name": "Happy Printing Company"
+        "english_name": "Happy Printing Company",
+        "marquee_text": "快樂印刷公司・Since 1977"
       }
     },
     "product-grid": {
       "type": "product-grid-company",
       "settings": {
+        "collection": "frontpage",
         "products_limit": 6,
         "intro_title": "歲月滋味",
         "intro_tag": "Lunar New Year Collection",
