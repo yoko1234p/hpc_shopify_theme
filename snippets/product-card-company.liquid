@@ -83,3 +83,70 @@
     </div>
   </div>
 </div>
+
+<script>
+(function() {
+  // Add to cart handler for product cards
+  document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+    if (btn.dataset.bound) return;
+    btn.dataset.bound = 'true';
+
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const variantId = this.dataset.variantId;
+      const originalText = this.textContent;
+
+      // Disable button and show loading
+      this.disabled = true;
+      this.textContent = '加入中...';
+
+      // Get button position for animation
+      const btnRect = this.getBoundingClientRect();
+      const startX = btnRect.left + btnRect.width / 2;
+      const startY = btnRect.top + btnRect.height / 2;
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: variantId,
+          quantity: 1
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        // Trigger fly animation
+        if (window.CartButton && window.CartButton.triggerAnimation) {
+          window.CartButton.triggerAnimation(startX, startY);
+        }
+
+        // Update cart count
+        fetch('/cart.js')
+          .then(res => res.json())
+          .then(cartData => {
+            if (window.CartButton && window.CartButton.updateCount) {
+              window.CartButton.updateCount(cartData.item_count);
+            }
+          });
+
+        // Show success feedback
+        this.textContent = '已加入!';
+
+        setTimeout(() => {
+          this.disabled = false;
+          this.textContent = originalText;
+        }, 1500);
+      })
+      .catch(err => {
+        console.error('Add to cart error:', err);
+        this.disabled = false;
+        this.textContent = originalText;
+      });
+    });
+  });
+})();
+</script>
