@@ -1,0 +1,156 @@
+{% comment %}
+  Floating Cart Button with Add-to-Cart Animation
+  Matches React CartButton.tsx styling for company theme
+{% endcomment %}
+
+<!-- Floating Cart Button -->
+<a
+  href="/cart"
+  id="floating-cart-btn"
+  class="fixed bottom-8 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center border-2 shadow-lg transition-all duration-300 bg-[#C83F49] hover:bg-[#B03540] border-[#C83F49] text-white hover:scale-110"
+  title="購物車"
+>
+  <!-- Cart Icon -->
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    class="w-6 h-6"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+    />
+  </svg>
+
+  <!-- Item Count Badge -->
+  <span
+    id="cart-count-badge"
+    class="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full flex items-center justify-center text-xs font-bold bg-[#B08D57] text-white transition-transform duration-300 {% if cart.item_count == 0 %}scale-0{% endif %}"
+  >
+    {{ cart.item_count }}
+  </span>
+</a>
+
+<!-- Add to Cart Animation Container -->
+<div id="add-to-cart-animation" class="fixed inset-0 z-[60] pointer-events-none overflow-hidden hidden">
+  <div id="animation-dot-x" class="absolute">
+    <div id="animation-dot-y">
+      <div class="w-4 h-4 bg-[#C83F49] rounded-full shadow-lg">
+        <div class="absolute inset-0 bg-[#C83F49] rounded-full animate-ping opacity-75"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes cart-fly-x {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(var(--delta-x)); }
+  }
+  @keyframes cart-fly-y {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(calc(var(--arc-height) * -1)); }
+    100% { transform: translateY(calc(var(--end-y) - var(--start-y))); }
+  }
+  @keyframes cart-fly-scale {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(0.3); opacity: 0.8; }
+  }
+  .cart-fly-x {
+    animation: cart-fly-x 0.7s cubic-bezier(0.2, 0, 0.8, 1) forwards;
+  }
+  .cart-fly-y {
+    animation: cart-fly-y 0.7s cubic-bezier(0.5, 0, 0.5, 1) forwards;
+  }
+  .cart-fly-y > div {
+    animation: cart-fly-scale 0.7s ease-in forwards;
+  }
+</style>
+
+<script>
+(function() {
+  // Cart Button Animation and State Management
+  const cartBtn = document.getElementById('floating-cart-btn');
+  const cartBadge = document.getElementById('cart-count-badge');
+  const animationContainer = document.getElementById('add-to-cart-animation');
+  const animationDotX = document.getElementById('animation-dot-x');
+  const animationDotY = document.getElementById('animation-dot-y');
+
+  // Update cart count badge
+  function updateCartCount(count) {
+    if (cartBadge) {
+      if (count > 0) {
+        cartBadge.textContent = count > 99 ? '99+' : count;
+        cartBadge.classList.remove('scale-0');
+        cartBadge.classList.add('scale-125');
+        setTimeout(() => cartBadge.classList.remove('scale-125'), 200);
+      } else {
+        cartBadge.classList.add('scale-0');
+      }
+    }
+  }
+
+  // Trigger fly animation
+  function triggerFlyAnimation(startX, startY) {
+    if (!animationContainer || !animationDotX || !animationDotY || !cartBtn) return;
+
+    // Get cart button position
+    const cartRect = cartBtn.getBoundingClientRect();
+    const endX = cartRect.left + cartRect.width / 2;
+    const endY = cartRect.top + cartRect.height / 2;
+
+    // Calculate delta
+    const deltaX = endX - startX;
+    const deltaY = endY - startY;
+    const arcHeight = Math.min(150, Math.abs(deltaX) * 0.3);
+
+    // Set CSS variables for animation
+    animationDotX.style.left = startX + 'px';
+    animationDotX.style.top = startY + 'px';
+    animationDotX.style.setProperty('--delta-x', deltaX + 'px');
+    animationDotY.style.setProperty('--start-y', startY + 'px');
+    animationDotY.style.setProperty('--arc-height', arcHeight + 'px');
+    animationDotY.style.setProperty('--end-y', endY + 'px');
+
+    // Reset and trigger animation
+    animationContainer.classList.remove('hidden');
+    animationDotX.classList.remove('cart-fly-x');
+    animationDotY.classList.remove('cart-fly-y');
+
+    // Force reflow
+    void animationDotX.offsetWidth;
+
+    animationDotX.classList.add('cart-fly-x');
+    animationDotY.classList.add('cart-fly-y');
+
+    // Hide after animation
+    setTimeout(() => {
+      animationContainer.classList.add('hidden');
+      animationDotX.classList.remove('cart-fly-x');
+      animationDotY.classList.remove('cart-fly-y');
+
+      // Shake cart button
+      cartBtn.classList.add('animate-bounce');
+      setTimeout(() => cartBtn.classList.remove('animate-bounce'), 500);
+    }, 750);
+  }
+
+  // Expose functions globally
+  window.CartButton = {
+    updateCount: updateCartCount,
+    triggerAnimation: triggerFlyAnimation
+  };
+
+  // Fetch current cart count on page load
+  fetch('/cart.js')
+    .then(res => res.json())
+    .then(data => {
+      updateCartCount(data.item_count);
+    })
+    .catch(() => {});
+})();
+</script>
