@@ -1,0 +1,166 @@
+{% comment %}
+  Company Mode Hero Section
+  快樂印刷公司招牌風格 Hero
+  Matches React App.tsx Company mode (lines 276-406)
+{% endcomment %}
+
+<div class="min-h-screen flex flex-col overflow-x-hidden transition-colors duration-700 bg-[#F9F9F9] selection:bg-[#C83F49] selection:text-white">
+  <header class="relative min-h-screen flex flex-col justify-center items-center px-4 overflow-hidden">
+    <!-- Subtle Grid Background -->
+    <div class="absolute inset-0 z-0 pointer-events-none opacity-10">
+      <div class="w-full h-full" style="background-image: linear-gradient(to right, #C83F49 1px, transparent 1px), linear-gradient(to bottom, #C83F49 1px, transparent 1px); background-size: 60px 60px;"></div>
+    </div>
+
+    <!-- Main Signboard Container -->
+    <div class="relative z-10 flex flex-col items-center justify-center px-4 py-8 w-11/12 md:w-2/3 max-w-[1000px]">
+      <!-- Decorative top border -->
+      <div class="flex items-center gap-4 mb-8">
+        <div class="w-16 h-px bg-[#C83F49]/40"></div>
+        <div class="w-3 h-3 border-2 border-[#C83F49] rotate-45"></div>
+        <div class="w-16 h-px bg-[#C83F49]/40"></div>
+      </div>
+
+      <!-- Traditional 4-column Grid Layout: 快(印刷上) 樂(公司上) -->
+      <div class="grid grid-cols-4 gap-x-2 sm:gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-0 w-full relative">
+        <!-- Row 1: 快 (span 2 cols), 樂 (span 2 cols) - LARGER -->
+        <span class="col-span-2 font-lhkk font-black text-[#C83F49] text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[12rem] leading-none text-center">
+          {{ section.settings.char_1 | default: '快' }}
+        </span>
+        <span class="col-span-2 font-lhkk font-black text-[#C83F49] text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[12rem] leading-none text-center">
+          {{ section.settings.char_2 | default: '樂' }}
+        </span>
+
+        <!-- Row 2: 印 刷 公 司 - SMALLER -->
+        <span class="font-lhkk font-black text-[#C83F49] text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-none text-center">
+          {{ section.settings.char_3 | default: '印' }}
+        </span>
+        <span class="font-lhkk font-black text-[#C83F49] text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-none text-center">
+          {{ section.settings.char_4 | default: '刷' }}
+        </span>
+        <span class="font-lhkk font-black text-[#C83F49] text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-none text-center">
+          {{ section.settings.char_5 | default: '公' }}
+        </span>
+        <span class="relative font-lhkk font-black text-[#C83F49] text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-none text-center">
+          {{ section.settings.char_6 | default: '司' }}
+          <!-- Address - 司字右下方 -->
+          <span class="absolute -bottom-8 -right-4 sm:-right-6 font-lhkk text-[8px] sm:text-[10px] text-[#C83F49] leading-relaxed whitespace-nowrap">
+            {{ section.settings.address_line1 | default: '大角咀' }}<br>
+            {{ section.settings.address_line2 | default: '博文街17號' }}
+          </span>
+        </span>
+      </div>
+
+      <!-- English Name -->
+      <p class="mt-8 text-sm sm:text-base md:text-lg lg:text-xl tracking-[0.3em] sm:tracking-[0.4em] text-[#333]/70 font-serif">
+        {{ section.settings.english_name | default: 'Happy Printing Company' }}
+      </p>
+
+      <!-- Decorative bottom border -->
+      <div class="flex items-center gap-4 mt-8">
+        <div class="w-16 h-px bg-[#C83F49]/40"></div>
+        <div class="w-3 h-3 border-2 border-[#C83F49] rotate-45"></div>
+        <div class="w-16 h-px bg-[#C83F49]/40"></div>
+      </div>
+    </div>
+
+    <!-- Corner Decorations -->
+    <div class="absolute top-8 left-8 w-12 h-12 border-l-2 border-t-2 border-[#C83F49]/30"></div>
+    <div class="absolute top-8 right-8 w-12 h-12 border-r-2 border-t-2 border-[#C83F49]/30"></div>
+    <div class="absolute bottom-8 left-8 w-12 h-12 border-l-2 border-b-2 border-[#C83F49]/30"></div>
+    <div class="absolute bottom-8 right-8 w-12 h-12 border-r-2 border-b-2 border-[#C83F49]/30"></div>
+  </header>
+
+  <!-- Marquee Banner -->
+  <div class="bg-black text-[#d4af37] border-black py-2 overflow-hidden whitespace-nowrap border-y uppercase font-bold text-xs tracking-[0.4em] flex transition-colors duration-500 relative w-full max-w-[100vw]">
+    <div class="animate-marquee w-full inline-block px-4 font-lhkk flex-shrink-0">
+      {{ section.settings.marquee_text | default: '快樂印刷公司・Since 1977' }}
+      &nbsp; &nbsp; &nbsp; &nbsp;
+       {{ section.settings.marquee_text | default: '快樂印刷公司・Since 1977' }}
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+  .animate-marquee {
+    animation: marquee 15s linear infinite;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "公司招牌 Hero",
+  "tag": "section",
+  "class": "company-hero-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "char_1",
+      "label": "第一個字 (大)",
+      "default": "快"
+    },
+    {
+      "type": "text",
+      "id": "char_2",
+      "label": "第二個字 (大)",
+      "default": "樂"
+    },
+    {
+      "type": "text",
+      "id": "char_3",
+      "label": "第三個字",
+      "default": "印"
+    },
+    {
+      "type": "text",
+      "id": "char_4",
+      "label": "第四個字",
+      "default": "刷"
+    },
+    {
+      "type": "text",
+      "id": "char_5",
+      "label": "第五個字",
+      "default": "公"
+    },
+    {
+      "type": "text",
+      "id": "char_6",
+      "label": "第六個字",
+      "default": "司"
+    },
+    {
+      "type": "text",
+      "id": "address_line1",
+      "label": "地址第一行",
+      "default": "大角咀"
+    },
+    {
+      "type": "text",
+      "id": "address_line2",
+      "label": "地址第二行",
+      "default": "博文街17號"
+    },
+    {
+      "type": "text",
+      "id": "english_name",
+      "label": "英文名",
+      "default": "Happy Printing Company"
+    },
+    {
+      "type": "text",
+      "id": "marquee_text",
+      "label": "走馬燈文字",
+      "default": "快樂印刷公司・Since 1977"
+    }
+  ],
+  "presets": [
+    {
+      "name": "公司招牌 Hero"
+    }
+  ]
+}
+{% endschema %}

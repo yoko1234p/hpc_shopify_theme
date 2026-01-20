@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#C83F49">
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+  {%- endif -%}
+
+  <title>
+    {{ page_title }}
+    {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+    {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  <!-- 快樂印刷 Theme: Company Mode -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts (same as React APP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Noto+Serif+TC:wght@200;500;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
+  <!-- Custom Styles (same as React APP index.html) -->
+  <style>
+    /* 自定義字體 - 龍蝦快樂 */
+    @font-face {
+      font-family: 'LHKK';
+      src: url('{{ "LHKK7000v1.04.ttf" | asset_url }}') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* 應用自定義字體到中文文字 */
+    .font-lhkk {
+      font-family: 'LHKK', 'Noto Serif TC', serif !important;
+    }
+
+    .font-serif {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .writing-vertical {
+      writing-mode: vertical-rl;
+    }
+
+    body {
+      font-family: 'Playfair Display', serif;
+    }
+  </style>
+
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+
+  {{ content_for_header }}
+
+  <script>
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    window.THEME_MODE = 'company';
+  </script>
+</head>
+
+<body class="theme-company" style="background-color: #F9F9F9;">
+  <a class="skip-to-content-link visually-hidden" href="#MainContent">
+    {{ "accessibility.skip_to_content" | t }}
+  </a>
+
+  {{ content_for_layout }}
+
+  <script src="{{ 'theme-company.js' | asset_url }}" defer></script>
+</body>
+</html>

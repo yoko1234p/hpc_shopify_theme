@@ -1,0 +1,54 @@
+{% comment %}
+  Company Mode Footer
+  Matches React App.tsx footer styling
+{% endcomment %}
+
+<footer class="py-32 px-10 border-t relative z-20 transition-colors duration-500 border-black bg-[#f4f4f0]">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10 text-[9px] tracking-[0.4em] font-black uppercase font-lhkk text-zinc-600">
+    <div class="flex items-center gap-8">
+      <span>© {{ section.settings.year_start | default: '1960' }}-{{ section.settings.year_end | default: '2046' }}</span>
+      <span class="w-8 h-[1px] bg-black"></span>
+      <span>{{ section.settings.company_name | default: '快樂活版印刷公司' }}</span>
+    </div>
+    <div class="text-red-700 tracking-[0.8em]">{{ section.settings.slogan | default: '專為傷心人排版' }}</div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "頁尾 (Company)",
+  "tag": "section",
+  "class": "footer-company",
+  "settings": [
+    {
+      "type": "text",
+      "id": "year_start",
+      "label": "起始年份",
+      "default": "1960"
+    },
+    {
+      "type": "text",
+      "id": "year_end",
+      "label": "結束年份",
+      "default": "2046"
+    },
+    {
+      "type": "text",
+      "id": "company_name",
+      "label": "公司名稱",
+      "default": "快樂活版印刷公司"
+    },
+    {
+      "type": "text",
+      "id": "slogan",
+      "label": "標語",
+      "default": "專為傷心人排版"
+    }
+  ],
+  "presets": [
+    {
+      "name": "頁尾 (Company)"
+    }
+  ]
+}
+{% endschema %}

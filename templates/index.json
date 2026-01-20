@@ -1,0 +1,41 @@
+{
+  "sections": {
+    "company-hero": {
+      "type": "company-hero",
+      "settings": {
+        "char_1": "快",
+        "char_2": "樂",
+        "char_3": "印",
+        "char_4": "刷",
+        "char_5": "公",
+        "char_6": "司",
+        "address_line1": "大角咀",
+        "address_line2": "博文街17號",
+        "english_name": "Happy Printing Company"
+      }
+    },
+    "product-grid": {
+      "type": "product-grid-company",
+      "settings": {
+        "products_limit": 6,
+        "intro_title": "歲月滋味",
+        "intro_tag": "Lunar New Year Collection",
+        "intro_text": "味覺是記憶的鑰匙。新春將至，我們以傳統活版印刷的精神，打磨每一份糕點。不只是食物，更是對來年最厚重的祝福。"
+      }
+    },
+    "footer": {
+      "type": "footer-company",
+      "settings": {
+        "year_start": "1960",
+        "year_end": "2046",
+        "company_name": "快樂活版印刷公司",
+        "slogan": "專為傷心人排版"
+      }
+    }
+  },
+  "order": [
+    "company-hero",
+    "product-grid",
+    "footer"
+  ]
+}

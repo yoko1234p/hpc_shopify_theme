@@ -1,0 +1,85 @@
+{% comment %}
+  Company mode product card - Voucher/Ticket style
+  Usage: {% render 'product-card-company', product: product, index: forloop.index0 %}
+{% endcomment %}
+
+{%- assign delay = index | times: 0.2 | append: 's' -%}
+{%- assign tag = product.metafields.custom.hppye_tag -%}
+{%- assign weight = product.metafields.custom.weight -%}
+
+<div
+  class="scroll-reveal group cursor-pointer flex flex-col h-full"
+  style="transition-delay: {{ delay }};"
+  data-product-url="{{ product.url }}"
+>
+  <!-- The "Ticket" Container -->
+  <div class="flex-grow border-2 border-[#EAEAEA] group-hover:border-[#B08D57] transition-colors duration-500 relative bg-[#F9F9F9] p-2">
+
+    <!-- Type Tag -->
+    {%- if tag != blank -%}
+      <div class="absolute -top-2 -right-2 bg-[#C83F49] text-white text-[10px] py-1 px-2 font-serif tracking-widest writing-vertical-rl h-16 shadow-md z-20">
+        {{ tag }}
+      </div>
+    {%- endif -%}
+
+    <!-- Inner Border (Double Line) -->
+    <div class="h-full border border-[#333]/10 p-4 flex flex-col relative overflow-hidden">
+      <!-- Cutout Circles (Ticket effect) -->
+      <div class="absolute top-1/2 -left-3 w-6 h-6 bg-white rounded-full border border-[#EAEAEA]"></div>
+      <div class="absolute top-1/2 -right-3 w-6 h-6 bg-white rounded-full border border-[#EAEAEA]"></div>
+
+      <!-- Image Area -->
+      <div class="w-full aspect-square mb-6 overflow-hidden transition-all duration-700 relative bg-gradient-to-b from-[#f5f5f0] to-[#e8e6dc] flex items-center justify-center">
+        {%- if product.featured_image != blank -%}
+          <img
+            src="{{ product.featured_image | image_url: width: 400 }}"
+            alt="{{ product.title | escape }}"
+            class="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-1000"
+            loading="lazy"
+          >
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'w-full h-full' }}
+        {%- endif -%}
+        <div class="absolute inset-0 bg-[#B08D57]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-multiply"></div>
+      </div>
+
+      <!-- Content -->
+      <div class="text-center mt-auto">
+        <h3 class="text-2xl font-lhkk font-black text-[#333] mb-1 h-8 flex items-center justify-center">
+          {{ product.title }}
+        </h3>
+        <p class="text-[10px] text-[#B08D57] tracking-[0.2em] uppercase mb-4 font-mono h-8 flex items-center justify-center">
+          {{ product.metafields.custom.name_en | default: '' }}
+        </p>
+
+        <div class="w-8 h-px bg-[#333]/20 mx-auto mb-4"></div>
+
+        <p class="text-sm text-[#333]/80 leading-relaxed font-serif mb-4 line-clamp-2 h-12">
+          {{ product.description | strip_html | truncate: 80 }}
+        </p>
+
+        <!-- Weight Display -->
+        {%- if weight != blank -%}
+          <div class="flex items-center justify-center gap-1 text-xs text-[#B08D57] font-mono mb-2">
+            <span class="opacity-60">重量</span>
+            <span class="font-bold">{{ weight }}</span>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- Price / Action -->
+      <div class="mt-4 pt-4 border-t border-dashed border-[#333]/20 flex justify-between items-center">
+        <span class="font-mono text-lg font-bold text-[#333]">
+          {{ product.price | money }}
+        </span>
+        <button
+          type="button"
+          class="add-to-cart-btn text-xs text-[#C83F49] font-bold border-b border-[#C83F49] pb-0.5 hover:text-[#B08D57] hover:border-[#B08D57] transition-colors"
+          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+        >
+          添加至購物車
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

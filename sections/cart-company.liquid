@@ -1,0 +1,281 @@
+{% comment %}
+  Company mode cart page
+  Matches React CartPage.tsx styling for seal/company theme
+{% endcomment %}
+
+<div class="min-h-screen bg-[#F9F9F9] py-8 px-4 md:px-8">
+  <!-- Back Button -->
+  <a
+    href="/"
+    class="mb-8 flex items-center gap-2 text-sm font-lhkk text-[#333333]/60 hover:text-[#333333] transition-colors"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+    回主頁
+  </a>
+
+  <div class="max-w-4xl mx-auto">
+    {%- if cart.item_count > 0 -%}
+      <!-- Header with Clear Cart -->
+      <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold font-lhkk text-[#333333]">購物車</h1>
+        <button
+          type="button"
+          id="clear-cart-btn"
+          class="text-sm text-[#333333]/60 hover:text-[#C83F49] transition-colors flex items-center gap-1"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+          清空購物車
+        </button>
+      </div>
+
+      <!-- Cart Items -->
+      <div class="bg-white border border-[#EAEAEA] divide-y divide-[#EAEAEA]">
+        {%- for item in cart.items -%}
+          <div class="p-4 md:p-6 flex gap-4 md:gap-6" data-line-item="{{ item.key }}">
+            <!-- Product Image -->
+            <div class="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 border border-[#EAEAEA] p-2 flex items-center justify-center">
+              {%- if item.image -%}
+                <img
+                  src="{{ item.image | image_url: width: 150 }}"
+                  alt="{{ item.title | escape }}"
+                  class="max-w-full max-h-full object-contain"
+                >
+              {%- else -%}
+                <div class="w-full h-full flex items-center justify-center text-[#333333]/60">
+                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+              {%- endif -%}
+            </div>
+
+            <!-- Product Info -->
+            <div class="flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="font-bold font-lhkk text-[#333333]">{{ item.product.title }}</h3>
+                {%- if item.variant.title != 'Default Title' -%}
+                  <p class="text-sm text-[#333333]/60">{{ item.variant.title }}</p>
+                {%- endif -%}
+              </div>
+              <p class="font-bold text-[#C83F49]">{{ item.final_price | money }}</p>
+            </div>
+
+            <!-- Quantity Controls -->
+            <div class="flex flex-col items-end justify-between">
+              <button
+                type="button"
+                class="remove-item-btn p-1 text-[#333333]/60 hover:text-[#C83F49] transition-colors"
+                data-line-key="{{ item.key }}"
+                title="移除產品"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+
+              <div class="flex items-center border border-[#EAEAEA]">
+                <button
+                  type="button"
+                  class="qty-decrease w-8 h-8 flex items-center justify-center hover:bg-[#F0F0F0] transition-colors"
+                  data-line-key="{{ item.key }}"
+                  data-current-qty="{{ item.quantity }}"
+                >
+                  <span class="text-lg">-</span>
+                </button>
+                <span class="w-10 text-center font-mono text-sm text-[#333333]">{{ item.quantity }}</span>
+                <button
+                  type="button"
+                  class="qty-increase w-8 h-8 flex items-center justify-center hover:bg-[#F0F0F0] transition-colors"
+                  data-line-key="{{ item.key }}"
+                  data-current-qty="{{ item.quantity }}"
+                >
+                  <span class="text-lg">+</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <!-- Cart Summary -->
+      <div class="mt-6 bg-white border border-[#EAEAEA] p-6">
+        <!-- 配送說明 -->
+        <div class="mb-6 pb-6 border-b border-[#EAEAEA]">
+          <ul class="text-sm text-[#333333]/60 space-y-1">
+            <li>• 2-5個工作天內進行配送</li>
+            <li>• 線上購物滿 HK$500 免費送貨</li>
+            <li>• 食品出門，恕不退換</li>
+          </ul>
+        </div>
+
+        <div class="flex justify-between items-center mb-6">
+          <span class="text-lg text-[#333333]">小計</span>
+          <span class="text-2xl font-bold text-[#C83F49]">{{ cart.total_price | money }}</span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a
+            href="/"
+            class="flex-1 py-3 px-6 border border-[#C83F49] text-[#C83F49] hover:bg-[#C83F49] hover:text-white font-bold tracking-wider transition-all duration-300 text-center"
+          >
+            繼續購物
+          </a>
+          <a
+            href="/checkout"
+            class="flex-1 py-3 px-6 bg-[#C83F49] hover:bg-[#B03A42] text-white font-bold tracking-wider transition-all duration-300 text-center"
+          >
+            前往結帳
+          </a>
+        </div>
+      </div>
+
+      <!-- Trust badges -->
+      <div class="mt-8 flex flex-wrap justify-center gap-6 text-sm text-[#333333]/60">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          安全付款
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+          </svg>
+          支援多種付款方式
+        </div>
+      </div>
+
+    {%- else -%}
+      <!-- Empty Cart -->
+      <div class="text-center py-20">
+        <div class="text-6xl mb-6 text-[#333333]/60">
+          <svg class="w-24 h-24 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1"
+              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+            />
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold mb-4 font-lhkk text-[#333333]">購物車係空嘅</h1>
+        <p class="mb-8 text-[#333333]/60">快啲去揀啲心水嘢啦！</p>
+        <a
+          href="/"
+          class="inline-block px-8 py-3 font-bold tracking-wider transition-all duration-300 bg-[#C83F49] hover:bg-[#B03A42] text-white"
+        >
+          繼續購物
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <!-- Clear Cart Confirm Modal -->
+  <div id="clear-cart-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white border border-[#EAEAEA] p-6 max-w-sm w-full">
+      <h3 class="text-lg font-bold mb-4 font-lhkk text-[#333333]">確認清空購物車？</h3>
+      <p class="text-sm mb-6 text-[#333333]/60">此操作將移除購物車內所有商品，確定要繼續嗎？</p>
+      <div class="flex gap-3">
+        <button
+          type="button"
+          id="cancel-clear-btn"
+          class="flex-1 py-2 px-4 border border-[#C83F49] text-[#C83F49] hover:bg-[#C83F49] hover:text-white font-bold transition-all duration-300"
+        >
+          取消
+        </button>
+        <button
+          type="button"
+          id="confirm-clear-btn"
+          class="flex-1 py-2 px-4 bg-[#C83F49] hover:bg-[#B03A42] text-white font-bold transition-all duration-300"
+        >
+          確認清空
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const modal = document.getElementById('clear-cart-modal');
+
+  // Clear cart button
+  const clearCartBtn = document.getElementById('clear-cart-btn');
+  if (clearCartBtn) {
+    clearCartBtn.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    });
+  }
+
+  // Cancel clear
+  document.getElementById('cancel-clear-btn')?.addEventListener('click', () => {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  });
+
+  // Confirm clear
+  document.getElementById('confirm-clear-btn')?.addEventListener('click', () => {
+    fetch('/cart/clear.js', { method: 'POST' })
+      .then(() => window.location.reload());
+  });
+
+  // Remove item
+  document.querySelectorAll('.remove-item-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const lineKey = this.dataset.lineKey;
+      fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: lineKey, quantity: 0 })
+      }).then(() => window.location.reload());
+    });
+  });
+
+  // Quantity decrease
+  document.querySelectorAll('.qty-decrease').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const lineKey = this.dataset.lineKey;
+      const qty = parseInt(this.dataset.currentQty);
+      if (qty <= 1) {
+        fetch('/cart/change.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: lineKey, quantity: 0 })
+        }).then(() => window.location.reload());
+      } else {
+        fetch('/cart/change.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: lineKey, quantity: qty - 1 })
+        }).then(() => window.location.reload());
+      }
+    });
+  });
+
+  // Quantity increase
+  document.querySelectorAll('.qty-increase').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const lineKey = this.dataset.lineKey;
+      const qty = parseInt(this.dataset.currentQty);
+      fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: lineKey, quantity: qty + 1 })
+      }).then(() => window.location.reload());
+    });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "購物車 (Company)",
+  "tag": "section",
+  "class": "cart-company"
+}
+{% endschema %}

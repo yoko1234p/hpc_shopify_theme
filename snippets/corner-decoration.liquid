@@ -1,0 +1,15 @@
+{% comment %}
+  Corner decoration for Company mode hero
+  Usage: {% render 'corner-decoration', position: 'top-left' %}
+{% endcomment %}
+
+{%- case position -%}
+  {%- when 'top-left' -%}
+    <div class="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-[#333]/20"></div>
+  {%- when 'top-right' -%}
+    <div class="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-[#333]/20"></div>
+  {%- when 'bottom-left' -%}
+    <div class="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-[#333]/20"></div>
+  {%- when 'bottom-right' -%}
+    <div class="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-[#333]/20"></div>
+{%- endcase -%}

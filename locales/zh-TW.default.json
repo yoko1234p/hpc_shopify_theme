@@ -1,0 +1,22 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "跳至內容"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "加入購物車",
+      "buy_now": "立即購買",
+      "quantity": "數量"
+    }
+  },
+  "cart": {
+    "title": "購物車",
+    "empty": "購物車係空嘅",
+    "continue_shopping": "繼續購物",
+    "checkout": "前往結帳",
+    "subtotal": "小計",
+    "clear_cart": "清空購物車"
+  }
+}
